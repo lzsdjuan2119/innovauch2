@@ -1,4 +1,5 @@
-<?php
+<?php 
+session_start();
 require_once 'conexion.php';
 
 function limpiar_datos(string $datos): string {
