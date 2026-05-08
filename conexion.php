@@ -1,4 +1,6 @@
 <?php
+session_start()
+    
 // --- conexion.php ---
 
 function obtener_conexion() {
