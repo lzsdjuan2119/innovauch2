@@ -41,7 +41,7 @@ if (isset($_GET['error']) && $_GET['error'] === 'sesion') $error = 'Sesión expi
 <body class="bg-crema d-flex align-items-center justify-content-center min-vh-100">
 <main class="w-100 p-3" style="max-width:400px;">
     <div class="login-card shadow-lg p-4">
-        <h3 class="text-center fw-bold text-marino mb-4">INNOVA UCH</h3>
+        <h3 class="text-center fw-bold text-marino mb-4">INNOVA UCH🚀</h3>
         <?php if ($error): ?><div class="alert alert-danger"><?= $error ?></div><?php endif; ?>
         
         <form method="POST">
