@@ -1,5 +1,6 @@
 <?php
 // dashboard.php
+session_start();
 require_once 'funciones.php';
 verificar_sesion();
 
