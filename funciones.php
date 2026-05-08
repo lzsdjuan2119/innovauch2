@@ -29,9 +29,6 @@ function registrar_usuario(string $nombre, string $apellido, string $correo, str
         return false;
     }
 }
-
-function autenticar_usuario(string $correo, string $clave): array|false {
-    $pdo = obtener_conexion();
     try {
         // Volvemos a usar el Procedimiento Almacenado
         $stmt = $pdo->prepare('CALL pa_login(?)');
