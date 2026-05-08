@@ -1,0 +1,36 @@
+/* CSS Optimizado (-10% código) */
+:root {
+    --naranja: #F97316; --marino: #1E293B; --crema: #FFF7ED; --texto: #334155;
+    --radio: 10px; --trans: 0.2s ease;
+}
+body { font-family: system-ui, sans-serif; background: var(--crema); color: var(--texto); margin: 0; }
+.bg-crema { background: var(--crema) !important; }
+.text-marino { color: var(--marino) !important; }
+.text-naranja { color: var(--naranja) !important; }
+
+/* Contenedores y Tarjetas */
+.topbar-uch { background: var(--marino); border-bottom: 3px solid var(--naranja); }
+.login-card, .proyecto-card { background: #FFF; border-radius: var(--radio); border: 1px solid #E2E8F0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+.proyecto-card { padding: 1.2rem; display: flex; flex-direction: column; transition: transform var(--trans); }
+.proyecto-card:hover { transform: translateY(-3px); box-shadow: 0 8px 12px rgba(0,0,0,0.1); }
+.borde-mio { border: 2px solid var(--naranja); }
+
+/* Inputs y Botones */
+.input-uch { border: 1.5px solid #CBD5E1; border-radius: var(--radio); padding: .6rem; }
+.input-uch:focus { border-color: var(--naranja); box-shadow: 0 0 0 2px rgba(249,115,22,.2); outline: none; }
+.btn-uch { background: var(--naranja); color: #FFF; border: none; border-radius: var(--radio); font-weight: bold; padding: .6rem 1rem; transition: background var(--trans); }
+.btn-uch:hover, .btn-uch:focus { background: #EA6C0A; color: #FFF; }
+.link-uch { color: var(--naranja); text-decoration: none; font-weight: 500; }
+.link-uch:hover { text-decoration: underline; }
+
+/* Badges */
+.badge-cat { padding: .2rem .6rem; border-radius: 20px; font-size: .75rem; font-weight: bold; display: inline-block; width: fit-content; }
+.badge-tech { background: #EFF6FF; color: #1D4ED8; }
+.badge-salud { background: #FEF2F2; color: #B91C1C; }
+.badge-edu { background: #FFF7ED; color: #C2410C; }
+.badge-env { background: #F0FDF4; color: #15803D; }
+.badge-otro { background: #E2E8F0; color: #1E293B; }
+
+/* FAB */
+.fab { position: fixed; bottom: 2rem; right: 2rem; width: 55px; height: 55px; border-radius: 50%; background: var(--naranja); color: #FFF; border: none; font-size: 2rem; box-shadow: 0 4px 10px rgba(249,115,22,.4); cursor: pointer; transition: transform var(--trans); }
+.fab:hover { transform: scale(1.1); }
