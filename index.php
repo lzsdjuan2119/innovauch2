@@ -1,63 +1,56 @@
 <?php
-// index.php - Innova UCH (Modificado para acceso directo)
+// Página de Login
 session_start();
+if (!empty($_SESSION['id_usuario'])) { header('Location: dashboard.php'); exit; }
 
-// Si el usuario ya tiene sesión activa, lo mandamos al dashboard de una vez
-if (isset($_SESSION['id_u'])) {
-    header('Location: dashboard.php');
-    exit;
-}
+require_once 'funciones.php';
+$error = '';
 
-// Procesar el clic en el botón "Ingresar"
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // 1. Saltamos la validación de base de datos
-    // 2. Creamos variables de sesión temporales (Datos de prueba)
-    $_SESSION['id_u'] = 1; 
-    $_SESSION['nombre'] = 'Usuario Invitado';
-    $_SESSION['correo'] = $_POST['correo'] ?? 'invitado@uch.pe';
-    $_SESSION['ciclo'] = 5;
+    $correo = limpiar_datos($_POST['correo'] ?? '');
+    $clave  = limpiar_datos($_POST['clave']  ?? '');
 
-    // 3. Redirección inmediata
-    header('Location: dashboard.php');
-    exit; // CRITICAL: Evita que el código siga ejecutándose en Railway
+    if (empty($correo) || empty($clave)) {
+        $error = 'Completa todos los campos.';
+    } elseif (!str_ends_with($correo, '@uch.pe')) {
+        $error = 'Usa tu correo institucional (@uch.pe).';
+    } else {
+        $usuario = autenticar_usuario($correo, $clave);
+        if ($usuario) {
+            $_SESSION['id_usuario'] = $usuario['id_usuario'];
+            $_SESSION['nombre']     = $usuario['nombre'];
+            $_SESSION['apellido']   = $usuario['apellido'];
+            $_SESSION['ciclo']      = $usuario['ciclo'];
+            header('Location: dashboard.php');
+            exit;
+        } else {
+            $error = 'Credenciales incorrectas.';
+        }
+    }
 }
+if (isset($_GET['error']) && $_GET['error'] === 'sesion') $error = 'Sesión expirada.';
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Innova UCH - Login</title>
+    <title>INNOVA UCH - Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="estilo_uch.css">
-    <style>
-        /* Estilo rápido para centrar el formulario */
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .login-container { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 350px; text-align: center; }
-        .logo { color: #004A99; font-weight: bold; font-size: 1.5rem; margin-bottom: 1.5rem; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background-color: #004A99; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1rem; }
-        button:hover { background-color: #003366; }
-        .footer-text { margin-top: 1rem; font-size: 0.8rem; color: #666; }
-    </style>
 </head>
-<body>
-
-    <div class="login-container">
-        <div class="logo">INNOVA UCH</div>
-        <p>Bienvenido al Portal de Emprendimiento</p>
+<body class="bg-crema d-flex align-items-center justify-content-center min-vh-100">
+<main class="w-100 p-3" style="max-width:400px;">
+    <div class="login-card shadow-lg p-4">
+        <h3 class="text-center fw-bold text-marino mb-4">INNOVA UCH</h3>
+        <?php if ($error): ?><div class="alert alert-danger"><?= $error ?></div><?php endif; ?>
         
-        <form method="POST" action="index.php">
-            <input type="email" name="correo" placeholder="Correo institucional" required>
-            <input type="password" name="clave" placeholder="Contraseña" required>
-            
-            <button type="submit">Ingresar</button>
+        <form method="POST">
+            <input type="email" name="correo" class="form-control mb-3 input-uch" placeholder="usuario@uch.pe" required value="<?= htmlspecialchars($_POST['correo'] ?? '') ?>">
+            <input type="password" name="clave" class="form-control mb-3 input-uch" placeholder="Contraseña" required>
+            <button type="submit" class="btn btn-uch w-100">Ingresar</button>
         </form>
-
-        <div class="footer-text">
-            ¿No tienes cuenta? <a href="registro.php">Regístrate aquí</a>
-        </div>
+        <p class="text-center mt-3 small"><a href="registro.php" class="link-uch">Crear cuenta</a></p>
     </div>
-
+</main>
 </body>
 </html>
