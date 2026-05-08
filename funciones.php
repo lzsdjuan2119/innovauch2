@@ -1,4 +1,8 @@
 <?php 
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_secure', 1); // Obligatorio para HTTPS de Railway
+session_start();
 session_start();
 require_once 'conexion.php';
 
