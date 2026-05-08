@@ -1,22 +1,19 @@
 <?php
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'innova_uch');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// ── conexion.php — Adaptado para Local y Railway ────────
 
-function obtener_conexion(): PDO {
-    static $pdo = null;
-    if ($pdo !== null) return $pdo;
+// getenv() busca las variables en el servidor de Railway. 
+define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
+define('DB_NAME', getenv('MYSQLDATABASE') ?: 'innova_uch');
+define('DB_USER', getenv('MYSQLUSER') ?: 'root');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
+define('DB_PORT', getenv('MYSQLPORT') ?: '3306');
 
-    $dsn = 'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME;
-    try {
-        $pdo = new PDO($dsn, DB_USER, DB_PASS, [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ]);
-    } catch (PDOException $e) {
-        die('Error de conexión.');
-    }
-    return $pdo;
+try {
+    // Nota: Agregamos el puerto a la conexión PDO porque Railway a veces usa puertos diferentes al 3306
+    $dsn = "mysql:host=" . DB_HOST . ";port=" . DB_PORT . ";dbname=" . DB_NAME . ";charset=utf8mb4";
+    $conexion = new PDO($dsn, DB_USER, DB_PASS);
+    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Error de conexión: " . $e->getMessage());
 }
+?>
