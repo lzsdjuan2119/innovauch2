@@ -1,11 +1,17 @@
 <?php 
+<?php
+// funciones.php — VERSIÓN CORREGIDA
 
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
-ini_set('session.cookie_secure', 1); // Obligatorio para HTTPS de Railway
-session_start();
-session_start();
+ini_set('session.cookie_secure', 1);
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once 'conexion.php';
+
+// ... resto de funciones igual ...
 
 function limpiar_datos(string $datos): string {
     return htmlspecialchars(stripslashes(trim($datos)), ENT_QUOTES, 'UTF-8');
